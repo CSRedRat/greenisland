@@ -6,33 +6,21 @@
       background, panels and locking surfaces.
     </description>
 
-    <request name="set_background">
-      <arg name="output" type="object" interface="wl_output"/>
-      <arg name="surface" type="object" interface="wl_surface"/>
-    </request>
-
-    <request name="set_panel">
+    <request name="set_overlay">
       <arg name="output" type="object" interface="wl_output"/>
       <arg name="surface" type="object" interface="wl_surface"/>
     </request>
 
     <request name="set_panel_geometry">
       <arg name="output" type="object" interface="wl_output"/>
-      <arg name="surface" type="object" interface="wl_surface"/>
       <arg name="x" type="int"/>
       <arg name="y" type="int"/>
       <arg name="width" type="int"/>
       <arg name="height" type="int"/>
     </request>
 
-    <request name="set_launcher">
-      <arg name="output" type="object" interface="wl_output"/>
-      <arg name="surface" type="object" interface="wl_surface"/>
-    </request>
-
     <request name="set_launcher_geometry">
       <arg name="output" type="object" interface="wl_output"/>
-      <arg name="surface" type="object" interface="wl_surface"/>
       <arg name="x" type="int"/>
       <arg name="y" type="int"/>
       <arg name="width" type="int"/>

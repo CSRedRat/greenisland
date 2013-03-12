@@ -30,10 +30,8 @@ import GreenIsland 1.0
 import FluidCore 1.0
 import FluidUi 1.0
 
-Window {
-    modality: Qt.ApplicationModal
-    width: 600
-    height: 600
+Item {
+    visible: false
 
     FrameSvgItem {
         id: frame

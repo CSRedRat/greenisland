@@ -29,9 +29,8 @@ import QtQuick.Window 2.0
 import GreenIsland 1.0
 import FluidCore 1.0
 
-Window {
+Item {
     id: launcherContainer
-    color: "transparent"
 
     // TODO: Define margins and padding in Fluid::Theme
     property real padding: 4
@@ -71,9 +70,9 @@ Window {
         enabledBorders: {
             switch (alignment) {
             case LauncherAlignment.Left:
-                return FrameSvgItem.RightBorder;
+                return FrameSvgItem.TopBorder | FrameSvgItem.RightBorder | FrameSvgItem.BottomBorder;
             case LauncherAlignment.Right:
-                return FrameSvgItem.LeftBorder;
+                return FrameSvgItem.TopBorder | FrameSvgItem.LeftBorder | FrameSvgItem.BottomBorder;
             case LauncherAlignment.Bottom:
                 return FrameSvgItem.LeftBorder | FrameSvgItem.TopBorder | FrameSvgItem.RightBorder;
             }
@@ -105,6 +104,7 @@ Window {
 
                 PropertyChanges {
                     target: launcherView
+                    anchors.leftMargin: padding
                     anchors.topMargin: frame.margins.top + padding
                     anchors.rightMargin: frame.margins.right + padding
                     anchors.bottomMargin: frame.margins.top + padding
@@ -118,6 +118,7 @@ Window {
                     target: launcherView
                     anchors.leftMargin: frame.margins.left + padding
                     anchors.topMargin: frame.margins.top + padding
+                    anchors.rightMargin: padding
                     anchors.bottomMargin: frame.margins.top + padding
                 }
             },

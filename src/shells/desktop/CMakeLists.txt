@@ -13,10 +13,7 @@ set(SOURCES
     desktopshell.cpp
     waylandintegration.cpp
     output.cpp
-    background.cpp
-    launcher.cpp
-    panel.cpp
-    appchooser.cpp
+    overlay.cpp
 )
 #    notificationsdaemon.cpp
 #    notificationsimage.cpp

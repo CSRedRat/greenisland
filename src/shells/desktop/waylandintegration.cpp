@@ -34,9 +34,7 @@
 #include "waylandintegration.h"
 #include "desktopshell.h"
 #include "output.h"
-#include "background.h"
-#include "panel.h"
-#include "launcher.h"
+#include "overlay.h"
 
 Q_GLOBAL_STATIC(WaylandIntegration, s_waylandIntegration)
 
@@ -93,15 +91,8 @@ void WaylandIntegration::handlePresent(void *data,
     DesktopShell *shell = DesktopShell::instance();
 
     foreach (Output *output, shell->outputs()) {
-        if (surface == output->backgroundSurface()) {
-            QMetaObject::invokeMethod(output->background()->window(), "show");
-        } else if (surface == output->panelSurface()) {
-            QMetaObject::invokeMethod(output->panel()->window(), "show");
-            QMetaObject::invokeMethod(output, "sendPanelGeometry");
-        } else if (surface == output->launcherSurface()) {
-            //QMetaObject::invokeMethod(output, "sendLauncherGeometry");
-            //QMetaObject::invokeMethod(output->launcher()->window(), "show");
-        }
+        if (surface == output->overlaySurface())
+            QMetaObject::invokeMethod(output->overlay()->window(), "show");
     }
 }
 

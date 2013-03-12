@@ -32,9 +32,9 @@
 #include <QScreen>
 #include <QTimer>
 
-#include "background.h"
+#include "overlay.h"
 
-Background::Background(QScreen *screen, QObject *parent)
+Overlay::Overlay(QScreen *screen, QObject *parent)
     : QObject(parent)
 {
     // Engine
@@ -42,7 +42,7 @@ Background::Background(QScreen *screen, QObject *parent)
 
     // Load component
     m_component = new QQmlComponent(m_engine, this);
-    m_component->loadUrl(QUrl("qrc:///qml/Background.qml"));
+    m_component->loadUrl(QUrl("qrc:///qml/Overlay.qml"));
     if (!m_component->isReady())
         qFatal(qPrintable(m_component->errorString()));
 
@@ -50,7 +50,7 @@ Background::Background(QScreen *screen, QObject *parent)
     QObject *topLevel = m_component->create();
     m_window = qobject_cast<QQuickWindow *>(topLevel);
     if (!m_window)
-        qFatal("Error: Background root item must be a Window!\n");
+        qFatal("Error: Overlay root item must be a Window!\n");
     m_window->setScreen(screen);
 
     // This is a frameless window that stays on top of everything
@@ -65,15 +65,15 @@ Background::Background(QScreen *screen, QObject *parent)
             this, SLOT(updateScreenGeometry(QRect)));
 }
 
-Background::~Background()
+Overlay::~Overlay()
 {
     delete m_component;
     delete m_engine;
 }
 
-void Background::updateScreenGeometry(const QRect &geometry)
+void Overlay::updateScreenGeometry(const QRect &geometry)
 {
     m_window->setGeometry(geometry);
 }
 
-#include "moc_background.cpp"
+#include "moc_overlay.cpp"

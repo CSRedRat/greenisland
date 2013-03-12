@@ -34,9 +34,7 @@
 class QPlatformNativeInterface;
 class QScreen;
 
-class Background;
-class Panel;
-class Launcher;
+class Overlay;
 
 class Output : public QObject
 {
@@ -52,35 +50,15 @@ public:
         return m_output;
     }
 
-    Background *background() const {
-        return m_background;
+    Overlay *overlay() const {
+        return m_overlay;
     }
 
-    struct wl_surface *backgroundSurface() const {
-        return m_backgroundSurface;
+    struct wl_surface *overlaySurface() const {
+        return m_overlaySurface;
     }
 
-    void setBackground(Background *background);
-
-    Panel *panel() const {
-        return m_panel;
-    }
-
-    struct wl_surface *panelSurface() const {
-        return m_panelSurface;
-    }
-
-    void setPanel(Panel *panel);
-
-    Launcher *launcher() const {
-        return m_launcher;
-    }
-
-    struct wl_surface *launcherSurface() const {
-        return m_launcherSurface;
-    }
-
-    void setLauncher(Launcher *launcher);
+    void setOverlay(Overlay *overlay);
 
 public Q_SLOTS:
     void sendPanelGeometry();
@@ -92,14 +70,8 @@ private:
     QScreen *m_screen;
     struct wl_output *m_output;
 
-    Background *m_background;
-    struct wl_surface *m_backgroundSurface;
-
-    Panel *m_panel;
-    struct wl_surface *m_panelSurface;
-
-    Launcher *m_launcher;
-    struct wl_surface *m_launcherSurface;
+    Overlay *m_overlay;
+    struct wl_surface *m_overlaySurface;
 
 private Q_SLOTS:
     void panelGeometryChanged(const QRect &geometry);

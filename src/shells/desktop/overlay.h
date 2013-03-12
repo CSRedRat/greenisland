@@ -24,19 +24,19 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef BACKGROUND_H
-#define BACKGROUND_H
+#ifndef OVERLAY_H
+#define OVERLAY_H
 
 class QQmlEngine;
 class QQmlComponent;
 class QQuickWindow;
 
-class Background : public QObject
+class Overlay : public QObject
 {
     Q_OBJECT
 public:
-    explicit Background(QScreen *screen, QObject *parent = 0);
-    ~Background();
+    explicit Overlay(QScreen *screen, QObject *parent = 0);
+    ~Overlay();
 
     QQuickWindow *window() const {
         return m_window;
@@ -51,4 +51,4 @@ private:
     QQuickWindow *m_window;
 };
 
-#endif // BACKGROUND_H
+#endif // OVERLAY_H

@@ -35,121 +35,112 @@ Window {
     // Available geometry
     property rect availableGeometry: Qt.rect(x, y, width, height)
 
-    // AppChooser
-    property var appChooser: appChooserObject
+    // Export AppChooser object
+    property var appChooser: appChooser
 
+    /*
     // Notifications panel
     property var notifications: notificationsPanel
 
     // Recalculate geometry when the size changes
     onWidthChanged: calculateGeometry()
     onHeightChanged: calculateGeometry()
+    */
+
+    // Background
+    Background {
+        id: background
+        anchors.fill: parent
+    }
 
     // Panel
-    Loader {
-        id: panelComponent
+    Panel {
+        id: panel
         anchors {
             left: parent.left
             top: parent.top
             right: parent.right
         }
         z: 2
-        source: "Panel.qml"
-        asynchronous: true
-        onLoaded: {
-            // Recalculate geometry
-            calculateGeometry();
-        }
 
         // Animate Panel when it shows up
         Behavior on height {
             NumberAnimation { easing.type: Easing.InQuad; duration: 350 }
         }
+
+        Component.onCompleted: panel.height = panel.size
     }
 
     // Launcher
-    Loader {
-        id: launcherComponent
-        z: 2
-        source: "Launcher.qml"
-        asynchronous: true
-        onLoaded: {
-            // Recalculate geometry
-            calculateGeometry();
-        }
-
-        // Animate Launcher when it shows up
-        Behavior on width {
-            NumberAnimation { easing.type: Easing.InQuad; duration: 350 }
-        }
-        Behavior on height {
-            NumberAnimation { easing.type: Easing.InQuad; duration: 350 }
-        }
+    Launcher {
+        id: launcher
+        z:2
 
         states: [
             State {
                 name: "left"
-                when: launcherComponent.item.alignment === LauncherAlignment.Left
+                when: launcher.alignment === LauncherAlignment.Left
 
                 AnchorChanges {
-                    target: launcherComponent
+                    target: launcher
                     anchors.left: root.left
                 }
                 PropertyChanges {
-                    target: launcherComponent
-                    y: panelComponent.height
-                    width: item.launcherSize
+                    target: launcher
+                    y: panel.realSize
+                    width: size
                     height: root.height - y
                 }
                 PropertyChanges {
                     target: appChooser
-                    x: launcherComponent.x + launcherComponent.width
-                    y: launcherComponent.y
+                    x: launcher.x + launcher.width
+                    y: launcher.y
                 }
             },
             State {
                 name: "right"
-                when: launcherComponent.item.alignment === LauncherAlignment.Right
+                when: launcher.alignment === LauncherAlignment.Right
 
                 AnchorChanges {
-                    target: launcherComponent
+                    target: launcher
                     anchors.right: root.right
                 }
                 PropertyChanges {
-                    target: launcherComponent
-                    y: panelComponent.height
-                    width: item.launcherSize
+                    target: launcher
+                    y: panel.realSize
+                    width: size
                     height: root.height - y
                 }
                 PropertyChanges {
                     target: appChooser
-                    x: launcherComponent.x - appChooser.width
-                    y: launcherComponent.y
+                    x: launcher.x - appChooser.width
+                    y: launcher.y
                 }
             },
             State {
                 name: "bottom"
-                when: launcherComponent.item.alignment === LauncherAlignment.Bottom
+                when: launcher.alignment === LauncherAlignment.Bottom
 
                 AnchorChanges {
-                    target: launcherComponent
+                    target: launcher
                     anchors.bottom: root.bottom
                     anchors.horizontalCenter: root.horizontalCenter
                 }
                 PropertyChanges {
-                    target: launcherComponent
+                    target: launcher
                     width: root.width
-                    height: item.launcherSize
+                    height: size
                 }
                 PropertyChanges {
                     target: appChooser
-                    x: launcherComponent.x
-                    y: launcherComponent.y - appChooser.height
+                    x: launcher.x
+                    y: launcher.y - appChooser.height
                 }
             }
         ]
     }
 
+    /*
     // Active top left corner
     MouseArea {
         id: topLeftCorner
@@ -202,21 +193,21 @@ Window {
             appChooserObject.close();
         }
     }
+    */
 
     // Application chooser
-/*
     AppChooser {
-        id: appChooserObject
+        id: appChooser
         width: availableGeometry.width / 1.2
         height: availableGeometry.height / 1.2
 
         // Animate when it shows up
         Behavior on opacity {
-            NumberAnimation { duration: 200 }
+            NumberAnimation { easing.type: Easing.InQuad; duration: 250 }
         }
     }
-*/
 
+    /*
     // Notifications panel
     NotificationsPanel {
         id: notificationsPanel
@@ -280,4 +271,5 @@ Window {
             shell.updateAvailableGeometry();
         }
     }
+    */
 }

@@ -35,9 +35,7 @@
 #include "desktopshell.h"
 #include "waylandintegration.h"
 #include "output.h"
-#include "background.h"
-#include "panel.h"
-#include "launcher.h"
+#include "overlay.h"
 
 Q_GLOBAL_STATIC(DesktopShell, desktopShell)
 
@@ -97,34 +95,13 @@ void DesktopShell::create()
     foreach (QScreen *screen, QGuiApplication::screens()) {
         Output *output = new Output(screen);
 
-        // Geometry
-        qDebug() << "Creating shell surfaces on" << screen->name()
-                 << "with geometry" << screen->geometry();
-
-        // Set a wallpaper for each screen
-        output->setBackground(new Background(screen, this));
-        desktop_shell_set_background(object->shell, output->output(),
-                                     output->backgroundSurface());
-        qDebug() << "Created background surface" << output->backgroundSurface()
+        // Create an overlay for each screen
+        output->setOverlay(new Overlay(screen, this));
+        desktop_shell_set_overlay(object->shell, output->output(),
+                                  output->overlaySurface());
+        qDebug() << "Created overlay surface" << output->overlaySurface()
                  << "for output" << output->output() << "with geometry"
-                 << output->background()->window()->geometry();
-
-        // Create a panel window for each output
-        output->setPanel(new Panel(screen, this));
-        desktop_shell_set_panel(object->shell, output->output(),
-                                output->panelSurface());
-        qDebug() << "Created panel surface" << output->panelSurface()
-                 << "for output" << output->output() << "with geometry"
-                 << output->panel()->window()->geometry();
-
-        // Create a launcher window for each output
-        output->setLauncher(new Launcher(screen, this));
-        desktop_shell_set_launcher(object->shell, output->output(),
-                                   output->launcherSurface());
-        output->sendLauncherGeometry();
-        qDebug() << "Created launcher surface" << output->launcherSurface()
-                 << "for output" << output->output() << "with geometry"
-                 << output->launcher()->window()->geometry();
+                 << output->overlay()->window()->geometry();
 
         addOutput(output);
     }

@@ -28,10 +28,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import FluidCore 1.0
 
-Window {
-    color: "transparent"
-    visible: false
-
+Item {
     // Padding
     // TODO: Take it from parameters
     property real padding: 2

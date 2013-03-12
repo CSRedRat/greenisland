@@ -31,20 +31,14 @@
 #include <qpa/qplatformnativeinterface.h>
 
 #include "output.h"
-#include "background.h"
-#include "panel.h"
-#include "launcher.h"
+#include "overlay.h"
 #include "waylandintegration.h"
 
 Output::Output(QScreen *screen)
     : QObject()
     , m_screen(screen)
-    , m_background(0)
-    , m_backgroundSurface(0)
-    , m_panel(0)
-    , m_panelSurface(0)
-    , m_launcher(0)
-    , m_launcherSurface(0)
+    , m_overlay(0)
+    , m_overlaySurface(0)
 {
     // Native platform interface
     m_native = QGuiApplication::platformNativeInterface();
@@ -54,56 +48,30 @@ Output::Output(QScreen *screen)
                 m_native->nativeResourceForScreen("output", screen));
 }
 
-void Output::setBackground(Background *background)
+void Output::setOverlay(Overlay *overlay)
 {
-    if (!background)
+    if (!overlay)
         return;
 
-    m_background = background;
-    m_backgroundSurface = static_cast<struct wl_surface *>(
+    m_overlay = overlay;
+    m_overlaySurface = static_cast<struct wl_surface *>(
                 m_native->nativeResourceForWindow("surface",
-                                                  background->window()));
-}
-
-void Output::setPanel(Panel *panel)
-{
-    if (!panel)
-        return;
-
-    m_panel = panel;
-    m_panelSurface = static_cast<struct wl_surface *>(
-                m_native->nativeResourceForWindow("surface",
-                                                  panel->window()));
-}
-
-void Output::setLauncher(Launcher *launcher)
-{
-    if (!launcher)
-        return;
-
-    m_launcher = launcher;
-    m_launcherSurface = static_cast<struct wl_surface *>(
-                m_native->nativeResourceForWindow("surface",
-                                                  launcher->window()));
+                                                  overlay->window()));
 }
 
 void Output::sendPanelGeometry()
 {
-    if (m_panel)
-        panelGeometryChanged(m_panel->geometry());
 }
 
 void Output::sendLauncherGeometry()
 {
-    if (m_launcher)
-        launcherGeometryChanged(m_launcher->geometry());
 }
 
 void Output::panelGeometryChanged(const QRect &geometry)
 {
     WaylandIntegration *integration = WaylandIntegration::instance();
     desktop_shell_set_panel_geometry(integration->shell, m_output,
-                                     m_panelSurface, geometry.x(), geometry.y(),
+                                     geometry.x(), geometry.y(),
                                      geometry.width(), geometry.height());
 }
 
@@ -111,7 +79,7 @@ void Output::launcherGeometryChanged(const QRect &geometry)
 {
     WaylandIntegration *integration = WaylandIntegration::instance();
     desktop_shell_set_launcher_geometry(integration->shell, m_output,
-                                        m_launcherSurface, geometry.x(), geometry.y(),
+                                        geometry.x(), geometry.y(),
                                         geometry.width(), geometry.height());
 }
 
